@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -8,6 +9,7 @@ import {
 } from 'typeorm';
 import { Employee } from './employee.entity';
 import { Role } from 'src/auth/enum/role.enum';
+import * as bcrypt from 'bcrypt';
 
 @Entity('users')
 export class User {
@@ -44,4 +46,9 @@ export class User {
 
   @OneToMany(() => Employee, (employee) => employee.user)
   employees: Employee[];
+
+  @BeforeInsert()
+  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
 }
