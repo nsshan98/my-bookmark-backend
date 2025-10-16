@@ -19,6 +19,7 @@ import { JwtAuthGuard } from 'src/auth/guard/jwt-auth/jwt-auth.guard';
 import { Role } from 'src/auth/enum/role.enum';
 import { Roles } from 'src/auth/decorators/roles.decorators';
 import { Public } from 'src/auth/decorators/public.decorators';
+import { VerifyEmailDto } from './dto/verify-email.dto';
 
 @Controller('user')
 export class UserController {
@@ -28,6 +29,12 @@ export class UserController {
   @Post('signup')
   createUser(@Body() dto: CreateUserDto) {
     return this.userService.createUser(dto);
+  }
+
+  @Public()
+  @Post('verify-email')
+  verifyEmail(@Body() dto: VerifyEmailDto) {
+    return this.userService.verifyEmail(dto.email, dto.code);
   }
 
   @UseGuards(JwtAuthGuard)

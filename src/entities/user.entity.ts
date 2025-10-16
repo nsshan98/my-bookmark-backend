@@ -10,6 +10,7 @@ import {
 import { Employee } from './employee.entity';
 import { Role } from 'src/auth/enum/role.enum';
 import * as bcrypt from 'bcrypt';
+import { VerificationCode } from './verification-code.entity';
 
 @Entity('users')
 export class User {
@@ -24,6 +25,9 @@ export class User {
 
   @Column()
   email: string;
+
+  @Column({ default: false })
+  is_email_verified: boolean;
 
   @Column()
   password: string;
@@ -46,6 +50,9 @@ export class User {
 
   @OneToMany(() => Employee, (employee) => employee.user)
   employees: Employee[];
+
+  @OneToMany(() => VerificationCode, (code) => code.user)
+  verificationCodes: VerificationCode[];
 
   @BeforeInsert()
   async hashPassword() {

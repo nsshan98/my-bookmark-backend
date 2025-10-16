@@ -15,10 +15,12 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guard/jwt-auth/jwt-auth.guard';
 import { RolesGuard } from './guard/roles/roles.guard';
 import { Employee } from 'src/entities/employee.entity';
+import { VerificationCode } from 'src/entities/verification-code.entity';
+import { EmailService } from 'src/email/email.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Employee]),
+    TypeOrmModule.forFeature([User, Employee, VerificationCode]),
     JwtModule.registerAsync(jwtConfig.asProvider()),
     ConfigModule.forFeature(jwtConfig),
     ConfigModule.forFeature(refreshJwtConfig),
@@ -27,6 +29,7 @@ import { Employee } from 'src/entities/employee.entity';
   providers: [
     AuthService,
     UserService,
+    EmailService,
     LocalStrategy,
     JwtStrategy,
     RefreshJwtStrategy,
