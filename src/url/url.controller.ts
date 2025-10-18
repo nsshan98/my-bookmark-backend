@@ -7,8 +7,8 @@ import { Public } from 'src/auth/decorators/public.decorators';
 export class UrlController {
   constructor(private readonly urlService: UrlService) {}
 
-  @Post('info')
-  async getMetadata(@Body('url') url: string) {
+  @Post()
+  async getUrlMetadata(@Body('url') url: string) {
     return this.urlService.fetchMetadata(url);
   }
 }
