@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import dbConfig from './config/db.config';
 import { EmployeeModule } from './employee/employee.module';
+import { UrlModule } from './url/url.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { EmployeeModule } from './employee/employee.module';
     }),
     UserModule,
     EmployeeModule,
+    UrlModule,
     TypeOrmModule.forRootAsync({
       useFactory: dbConfig,
     }),
