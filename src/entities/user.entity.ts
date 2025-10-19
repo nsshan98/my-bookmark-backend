@@ -11,6 +11,7 @@ import { Employee } from './employee.entity';
 import { Role } from 'src/auth/enum/role.enum';
 import * as bcrypt from 'bcrypt';
 import { VerificationCode } from './verification-code.entity';
+import { Bookmark } from './bookmark.entity';
 
 @Entity('users')
 export class User {
@@ -50,6 +51,9 @@ export class User {
 
   @OneToMany(() => Employee, (employee) => employee.user)
   employees: Employee[];
+
+  @OneToMany(() => Bookmark, (bookmark) => bookmark.user)
+  bookmarks: Bookmark[];
 
   @OneToMany(() => VerificationCode, (code) => code.user)
   verificationCodes: VerificationCode[];

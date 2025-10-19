@@ -17,10 +17,11 @@ import { RolesGuard } from './guard/roles/roles.guard';
 import { Employee } from 'src/entities/employee.entity';
 import { VerificationCode } from 'src/entities/verification-code.entity';
 import { EmailService } from 'src/email/email.service';
+import { Bookmark } from 'src/entities/bookmark.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Employee, VerificationCode]),
+    TypeOrmModule.forFeature([User, Bookmark, Employee, VerificationCode]),
     JwtModule.registerAsync(jwtConfig.asProvider()),
     ConfigModule.forFeature(jwtConfig),
     ConfigModule.forFeature(refreshJwtConfig),

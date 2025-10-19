@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import dbConfig from './config/db.config';
 import { EmployeeModule } from './employee/employee.module';
 import { UrlModule } from './url/url.module';
+import { BookmarkModule } from './bookmark/bookmark.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { UrlModule } from './url/url.module';
       load: [dbConfig],
     }),
     UserModule,
+    BookmarkModule,
     EmployeeModule,
     UrlModule,
     TypeOrmModule.forRootAsync({
