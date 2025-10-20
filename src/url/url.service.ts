@@ -6,6 +6,7 @@ import metascraperTitle from 'metascraper-title';
 import metascraperDescription from 'metascraper-description';
 import metascraperImage from 'metascraper-image';
 import metascraperLogo from 'metascraper-logo';
+import metascraperLogoFavicon from 'metascraper-logo-favicon';
 import puppeteer from 'puppeteer';
 
 @Injectable()
@@ -16,6 +17,7 @@ export class UrlService {
     metascraperDescription(),
     metascraperImage(),
     metascraperLogo(),
+    metascraperLogoFavicon(),
   ]);
 
   async fetchMetadata(url: string) {

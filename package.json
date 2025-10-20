@@ -39,6 +39,7 @@
     "metascraper-description": "^5.49.2",
     "metascraper-image": "^5.49.2",
     "metascraper-logo": "^5.49.2",
+    "metascraper-logo-favicon": "^5.49.5",
     "metascraper-title": "^5.49.2",
     "metascraper-url": "^5.49.2",
     "multer": "^2.0.2",

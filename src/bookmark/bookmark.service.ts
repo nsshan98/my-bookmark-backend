@@ -19,19 +19,31 @@ export class BookmarkService {
       relations: ['user'],
     });
   }
+
   async createBookmark(dto: CreateBookmarkDto, user: User) {
+    const existingBookmark = await this.bookmarkRepository.findOne({
+      where: { url: dto.url, user: { id: user.id } },
+    });
+    if (existingBookmark) {
+      throw new NotFoundException('Bookmark already exists');
+    }
+
     const bookmark = this.bookmarkRepository.create({
       ...dto,
       user,
     });
 
     const saved = await this.bookmarkRepository.save(bookmark);
-    // console.log('saved employee:', saved);
+    console.log('saved bookmark:', saved);
 
     return {
       id: saved.id,
       url: saved.url,
       title: saved.title,
+      description: saved.description,
+      image: saved.image,
+      logo: saved.logo,
+      created_at: saved.created_at,
     };
   }
 

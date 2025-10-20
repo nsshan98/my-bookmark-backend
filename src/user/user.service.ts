@@ -8,7 +8,7 @@ import { PaginationDto } from './dto/pagination.dto';
 import { DEFAULT_PAGINATION_LIMIT } from 'src/utils/constants';
 import { VerificationCode } from 'src/entities/verification-code.entity';
 import { EmailService } from 'src/email/email.service';
-import { randomInt } from 'crypto';
+// import { randomInt } from 'crypto';
 
 @Injectable()
 export class UserService {
@@ -31,22 +31,22 @@ export class UserService {
     const user = this.userReporsitory.create(dto);
     const savedUser = await this.userReporsitory.save(user);
 
-    const code = randomInt(100000, 999999).toString();
-    console.log(code, 'v-code');
-    const expires = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
-    console.log(expires, 'expires');
+    // const code = randomInt(100000, 999999).toString();
+    // console.log(code, 'v-code');
+    // const expires = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
+    // console.log(expires, 'expires');
 
-    await this.codeRepository.save(
-      this.codeRepository.create({
-        user: savedUser,
-        code,
-        expiresAt: expires,
-      }),
-    );
-    await this.emailService.sendVerificationEmail(savedUser.email, code);
+    // await this.codeRepository.save(
+    //   this.codeRepository.create({
+    //     user: savedUser,
+    //     code,
+    //     expiresAt: expires,
+    //   }),
+    // );
+    // await this.emailService.sendVerificationEmail(savedUser.email, code);
 
     return {
-      message: 'Signup successful. Please verify your email.',
+      message: 'Signup successful',
       user: savedUser,
     };
   }
