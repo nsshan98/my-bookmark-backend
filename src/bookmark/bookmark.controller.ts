@@ -77,8 +77,8 @@ export class BookmarkController {
 
   @Roles(Role.SUPPA_DUPPA_ADMIN, Role.USER)
   @Get('all-bookmarks')
-  async getAllBookmarks() {
-    const allBookmarks = await this.bookmarkService.getAllBookmarks();
+  async getAllBookmarks(@AuthenticatedUser() user: User) {
+    const allBookmarks = await this.bookmarkService.getAllBookmarks(user);
     return {
       message: 'All Bookmarks Fetched Successfully',
       data: allBookmarks,

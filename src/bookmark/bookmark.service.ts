@@ -34,7 +34,7 @@ export class BookmarkService {
     });
 
     const saved = await this.bookmarkRepository.save(bookmark);
-    console.log('saved bookmark:', saved);
+    // console.log('saved bookmark:', saved);
 
     return {
       id: saved.id,
@@ -66,9 +66,20 @@ export class BookmarkService {
     return await this.bookmarkRepository.delete({ id });
   }
 
-  async getAllBookmarks() {
+  async getAllBookmarks(user: User) {
     const bookmarks = await this.bookmarkRepository.find({
-      select: ['id', 'url', 'title'],
+      select: [
+        'id',
+        'url',
+        'title',
+        'logo',
+        'image',
+        'description',
+        'created_at',
+        'user',
+      ],
+      relations: ['user'],
+      where: { user: { id: user.id } },
       order: { created_at: 'DESC' },
     });
 
@@ -77,6 +88,10 @@ export class BookmarkService {
         id: bm.id,
         url: bm.url,
         title: bm.title,
+        description: bm.description,
+        image: bm.image,
+        logo: bm.logo,
+        created_at: bm.created_at,
       };
     });
     return result;
