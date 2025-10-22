@@ -9,6 +9,7 @@ import dbConfig from './config/db.config';
 import { EmployeeModule } from './employee/employee.module';
 import { UrlModule } from './url/url.module';
 import { BookmarkModule } from './bookmark/bookmark.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { BookmarkModule } from './bookmark/bookmark.module';
     }),
     UserModule,
     BookmarkModule,
+    CategoryModule,
     EmployeeModule,
     UrlModule,
     TypeOrmModule.forRootAsync({

@@ -3,7 +3,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -13,7 +12,7 @@ import { Role } from 'src/auth/enum/role.enum';
 import * as bcrypt from 'bcrypt';
 import { VerificationCode } from './verification-code.entity';
 import { Bookmark } from './bookmark.entity';
-import { Category } from './category-entity';
+import { Category } from './category.entity';
 
 @Entity('users')
 export class User {
@@ -57,11 +56,11 @@ export class User {
   @OneToMany(() => Bookmark, (bookmark) => bookmark.user)
   bookmarks: Bookmark[];
 
+  @OneToMany(() => Category, (category) => category.user)
+  categories: Category[];
+
   @OneToMany(() => VerificationCode, (code) => code.user)
   verificationCodes: VerificationCode[];
-
-  @ManyToMany(() => Category, (category) => category.users)
-  categories: Category[];
 
   @BeforeInsert()
   async hashPassword() {

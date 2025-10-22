@@ -2,11 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from './user.entity';
+import { Category } from './category.entity';
 
 @Entity('bookmarks')
 export class Bookmark {
@@ -36,4 +38,7 @@ export class Bookmark {
 
   @ManyToOne(() => User, (user) => user.bookmarks)
   user: User;
+
+  @ManyToMany(() => Category, (category) => category.bookmarks)
+  categories: Category[];
 }

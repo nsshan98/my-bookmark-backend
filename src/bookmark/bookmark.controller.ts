@@ -9,13 +9,11 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
-  UseInterceptors,
 } from '@nestjs/common';
 import { Roles } from 'src/auth/decorators/roles.decorators';
 import { Role } from 'src/auth/enum/role.enum';
 import { AuthenticatedUser } from 'src/auth/decorators/authenticated-user.decorators';
 import { User } from 'src/entities/user.entity';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { BookmarkService } from './bookmark.service';
 import { CreateBookmarkDto } from './dto/createBookmark.dto';
 import { UpdateBookmarkDto } from './dto/updateBookmark.dto';
@@ -35,7 +33,6 @@ export class BookmarkController {
 
   @Roles(Role.SUPPA_DUPPA_ADMIN, Role.USER)
   @Patch('update/:id')
-  @UseInterceptors(FileInterceptor('image'))
   async updateBookmark(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() dto: UpdateBookmarkDto,
