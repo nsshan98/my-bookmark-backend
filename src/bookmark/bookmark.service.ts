@@ -1,16 +1,23 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { User } from 'src/entities/user.entity';
 import { Bookmark } from 'src/entities/bookmark.entity';
 import { CreateBookmarkDto } from './dto/createBookmark.dto';
 import { UpdateBookmarkDto } from './dto/updateBookmark.dto';
+import { Category } from 'src/entities/category.entity';
 
 @Injectable()
 export class BookmarkService {
   constructor(
     @InjectRepository(Bookmark)
     private bookmarkRepository: Repository<Bookmark>,
+    @InjectRepository(Category)
+    private categoryRepository: Repository<Category>,
   ) {}
 
   async findOneWithId(id: string) {
@@ -21,15 +28,22 @@ export class BookmarkService {
   }
 
   async createBookmark(dto: CreateBookmarkDto, user: User) {
+    const { category_ids } = dto;
     const existingBookmark = await this.bookmarkRepository.findOne({
       where: { url: dto.url, user: { id: user.id } },
     });
+    const categories = await this.categoryRepository.findBy({
+      id: In(category_ids || []),
+    });
+
+    console.log(categories);
     if (existingBookmark) {
-      throw new NotFoundException('Bookmark already exists');
+      throw new BadRequestException('Bookmark already exists');
     }
 
     const bookmark = this.bookmarkRepository.create({
       ...dto,
+      categories,
       user,
     });
 
@@ -43,6 +57,10 @@ export class BookmarkService {
       description: saved.description,
       image: saved.image,
       logo: saved.logo,
+      categories: saved.categories.map((cat) => ({
+        id: cat.id,
+        category_name: cat.category_name,
+      })),
       created_at: saved.created_at,
     };
   }

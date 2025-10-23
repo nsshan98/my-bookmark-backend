@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -39,6 +40,9 @@ export class Bookmark {
   @ManyToOne(() => User, (user) => user.bookmarks)
   user: User;
 
-  @ManyToMany(() => Category, (category) => category.bookmarks)
+  @ManyToMany(() => Category, (category) => category.bookmarks, {
+    cascade: true,
+  })
+  @JoinTable({ name: 'bookmark_categories' })
   categories: Category[];
 }
