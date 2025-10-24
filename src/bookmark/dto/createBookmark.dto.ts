@@ -29,5 +29,6 @@ export class CreateBookmarkDto {
 
   @IsArray()
   @IsString({ each: true })
-  category_ids: string[];
+  @IsOptional()
+  category_ids?: string[];
 }

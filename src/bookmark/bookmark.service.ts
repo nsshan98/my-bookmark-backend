@@ -36,7 +36,6 @@ export class BookmarkService {
       id: In(category_ids || []),
     });
 
-    console.log(categories);
     if (existingBookmark) {
       throw new BadRequestException('Bookmark already exists');
     }
@@ -68,16 +67,37 @@ export class BookmarkService {
   async updateBookmark(id: string, dto: UpdateBookmarkDto) {
     const bookmark = await this.bookmarkRepository.findOne({
       where: { id },
-      // relations: ['user'],
+      relations: ['categories'],
     });
 
     if (!bookmark) throw new NotFoundException('Bookmark not found');
 
-    const { ...rest } = dto;
+    const { category_ids, ...rest } = dto;
+
+    if (category_ids) {
+      const categories = await this.categoryRepository.findBy({
+        id: In(category_ids),
+      });
+
+      bookmark.categories = categories;
+    }
 
     Object.assign(bookmark, rest);
 
-    return await this.bookmarkRepository.save(bookmark);
+    const updated = await this.bookmarkRepository.save(bookmark);
+
+    return {
+      id: updated.id,
+      url: updated.url,
+      title: updated.title,
+      description: updated.description,
+      image: updated.image,
+      logo: updated.logo,
+      categories: updated.categories.map((cat) => ({
+        id: cat.id,
+        category_name: cat.category_name,
+      })),
+    };
   }
 
   async deleteBookmark(id: string) {
