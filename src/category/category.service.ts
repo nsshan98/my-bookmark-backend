@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from 'src/entities/user.entity';
@@ -25,7 +29,7 @@ export class CategoryService {
       where: { category_name: dto.category_name, user: { id: user.id } },
     });
     if (existingCategory) {
-      throw new NotFoundException('Category already exists');
+      throw new BadRequestException('Category already exists');
     }
 
     const category = this.categoryRepository.create({
