@@ -81,4 +81,13 @@ export class CategoryService {
     });
     return result;
   }
+
+  async getBookmarksByCategory(user: User) {
+    const categories = await this.categoryRepository.find({
+      select: ['id', 'category_name', 'bookmarks'],
+      where: { user: { id: user.id }, bookmarks: { user: { id: user.id } } },
+      relations: ['bookmarks'],
+    });
+    return { categories };
+  }
 }

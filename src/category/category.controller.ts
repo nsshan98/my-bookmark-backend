@@ -81,4 +81,9 @@ export class CategoryController {
       data: allCategories,
     };
   }
+
+  @Get('bookmarks-by-category')
+  async getBookmarksByCategory(@AuthenticatedUser() user: User) {
+    return this.categoryService.getBookmarksByCategory(user);
+  }
 }
