@@ -81,4 +81,16 @@ export class BookmarkController {
       data: allBookmarks,
     };
   }
+
+  @Roles(Role.SUPPA_DUPPA_ADMIN, Role.USER)
+  @Get('bookmarks-with-category')
+  async getBookmarksWithCategory(@AuthenticatedUser() user: User) {
+    const allBookmarks =
+      await this.bookmarkService.getAllBookmarkByCategory(user);
+    console.log(allBookmarks);
+    return {
+      message: 'All Bookmarks with Category Fetched Successfully',
+      data: allBookmarks,
+    };
+  }
 }

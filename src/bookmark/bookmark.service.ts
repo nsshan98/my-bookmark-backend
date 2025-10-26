@@ -134,4 +134,44 @@ export class BookmarkService {
     });
     return result;
   }
+
+  async getAllBookmarkByCategory(user: User) {
+    const rows = await this.bookmarkRepository
+      .createQueryBuilder('bookmark')
+      .leftJoin('bookmark.categories', 'category')
+      .select([
+        'category.id AS category_id',
+        'category.category_name AS category_name',
+        'bookmark.id AS bookmark_id',
+        'bookmark.url AS url',
+        'bookmark.title AS title',
+        'bookmark.description AS description',
+        'bookmark.image AS image',
+        'bookmark.logo AS logo',
+        'bookmark.created_at AS created_at',
+      ])
+      .where('bookmark.userId = :userId', { userId: user.id })
+      .orderBy('category.created_at', 'DESC')
+      .getRawMany();
+    const grouped = new Map<string, any>();
+
+    for (const row of rows) {
+      const categoryId = row.category_id || 'uncategorized';
+      const categoryName = row.category_name || 'Uncategorized';
+
+      if (!grouped.has(categoryId)) {
+        grouped.set(categoryId, {
+          id: categoryId === 'uncategorized' ? null : categoryId,
+          name: categoryName,
+          bookmarks: [],
+        });
+      }
+
+      grouped.get(categoryId).bookmarks.push({
+        id: row.bookmark_id,
+        title: row.title,
+      });
+    }
+    return Array.from(grouped.values());
+  }
 }
