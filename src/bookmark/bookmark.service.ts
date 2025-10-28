@@ -151,8 +151,9 @@ export class BookmarkService {
         'bookmark.created_at AS created_at',
       ])
       .where('bookmark.userId = :userId', { userId: user.id })
-      .orderBy('category.created_at', 'DESC')
+      .orderBy('category.category_name', 'ASC')
       .getRawMany();
+
     const grouped = new Map<string, any>();
 
     for (const row of rows) {
@@ -170,8 +171,21 @@ export class BookmarkService {
       grouped.get(categoryId).bookmarks.push({
         id: row.bookmark_id,
         title: row.title,
+        url: row.url,
+        description: row.description,
+        image: row.image,
+        logo: row.logo,
+        created_at: row.created_at,
       });
     }
-    return Array.from(grouped.values());
+    const categories = Array.from(grouped.values());
+
+    categories.sort((a, b) => {
+      if (a.name === 'Uncategorized') return -1; // a first
+      if (b.name === 'Uncategorized') return 1; // b first
+      return a.name.localeCompare(b.name, 'en', { sensitivity: 'base' });
+    });
+
+    return categories;
   }
 }
