@@ -82,6 +82,7 @@ export class CategoryController {
     };
   }
 
+  @Roles(Role.SUPPA_DUPPA_ADMIN, Role.USER)
   @Get('bookmarks-by-category')
   async getBookmarksByCategory(@AuthenticatedUser() user: User) {
     return this.categoryService.getBookmarksByCategory(user);
