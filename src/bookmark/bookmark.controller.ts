@@ -87,7 +87,6 @@ export class BookmarkController {
   async getBookmarksWithCategory(@AuthenticatedUser() user: User) {
     const allBookmarks =
       await this.bookmarkService.getAllBookmarkByCategory(user);
-    console.log(allBookmarks);
     return {
       message: 'All Bookmarks with Category Fetched Successfully',
       data: allBookmarks,
