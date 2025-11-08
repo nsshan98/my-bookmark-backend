@@ -10,9 +10,14 @@ import { EmployeeModule } from './employee/employee.module';
 import { UrlModule } from './url/url.module';
 import { BookmarkModule } from './bookmark/bookmark.module';
 import { CategoryModule } from './category/category.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
+    CacheModule.register({
+      max: 100, // maximum number of items in cache
+      ttl: 0, // time to live in seconds
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
       expandVariables: true,
